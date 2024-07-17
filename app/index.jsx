@@ -1,6 +1,8 @@
-import { View, Text, SafeAreaView, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Link } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
   const StreamData = [
@@ -38,6 +40,9 @@ const Home = () => {
             <Ionicons name="person-circle-outline" size={35} color="white" />
           </View>
         </View>
+        <Link href="login">
+          <Text className="text-white">Login</Text>
+        </Link>
         <View className="m-3">
           <Text className="text-3xl font-bold text-white mt-4 mb-2">
             Recent lives
