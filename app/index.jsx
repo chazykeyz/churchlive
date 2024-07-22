@@ -1,8 +1,7 @@
 import { View, Text, ScrollView, Image, Pressable } from "react-native";
-import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Link, router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useEffect } from "react";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { router } from "expo-router";
 
 const Home = () => {
   const StreamData = [
@@ -31,23 +30,14 @@ const Home = () => {
       churchName: "Ufufuo na uzima",
     },
   ];
+
   return (
-    <SafeAreaView className="bg-black flex-1 ">
+    <View className="bg-black flex-1 ">
       <ScrollView>
-        <View className=" flex-row  mx-4 pb-2 mt-5 justify-between items-end border-b border-white/20">
-          <Text className="text-lg font-black text-white">CHURCH•LIVE</Text>
-          <Pressable
-            onPress={() => {
-              router.push("profile");
-            }}
-          >
-            <Ionicons name="person-circle-outline" size={35} color="white" />
-          </Pressable>
-        </View>
-        <Link href="login">
+        {/* <Link href="login">
           <Text className="">Login</Text>
-        </Link>
-        <View className="m-3">
+        </Link> */}
+        <View className="mx-3 ">
           <Text className="text-3xl font-bold text-white mt-4 mb-2">
             Recent lives
           </Text>
@@ -64,7 +54,7 @@ const Home = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -72,30 +62,37 @@ export default Home;
 
 const PreacherCard = ({ image, title, name, churchName }) => {
   return (
-    <View className=" my-1 overflow-hidden w-full rounded-xl border border-white/40">
-      <Image
-        className="w-full h-[220px]"
-        alt="preacher_image"
-        source={{
-          uri: image,
-        }}
-      />
+    <Pressable
+      onPress={() => {
+        router.push(`/${1}`);
+      }}
+    >
+      <View className=" my-1 overflow-hidden w-full rounded-xl border border-white/40">
+        <Image
+          className="w-full h-[220px] bg-white/10"
+          alt="preacher_image"
+          source={{
+            uri: image,
+          }}
+        />
 
-      <View className="py-3 px-2 bg-white/20 flex">
-        <View className="flex-row gap-x-2  items-center  ">
-          <Ionicons name="radio-sharp" size={24} color="white" />
-          <Text
-            className="mr-7 text-white"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {title}
+        <View className="py-3 px-2 bg-white/20 flex">
+          <View className="flex-row  items-center  ">
+            {/* <Ionicons name="radio-sharp" size={24} color="red" /> */}
+            <Text className=" text-red-600 font-bold">LIVE</Text>
+            <Text
+              className="mr-12 text-white uppercase"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {title}
+            </Text>
+          </View>
+          <Text className="text-white/70 mt-1">
+            {name} • {churchName}
           </Text>
         </View>
-        <Text className="text-white/70 mt-1">
-          {name} • {churchName}
-        </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
