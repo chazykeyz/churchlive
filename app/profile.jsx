@@ -19,16 +19,8 @@ const Profile = () => {
     }
   };
 
-  const tableData = [
-    ["ID", "Date Issued", "Amount", "Mobile No"],
-    ["#23HGY", "6/12/24", "TZS 2000", "0787064145"],
-    ["#23HGY", "6/12/24", "TZS 2000", "0787064145"],
-    ["#23HGY", "6/12/24", "TZS 2000", "0787064145"],
-    ["#23HGY", "6/12/24", "TZS 2000", "0787064145"],
-    // Add more rows as needed
-  ];
   return (
-    <ScrollView className="flex-1 bg-black p-3">
+    <View className="flex-1 bg-black p-3">
       <Text className="text-white text-3xl font-bold">Profile</Text>
       <View className="my-4">
         <Text className="text-white/60 pb-1 text-lg">Edit number</Text>
@@ -47,31 +39,11 @@ const Profile = () => {
         />
         <Pressable onPress={handleEditProfileSubmit}>
           <View className="w-full p-3 rounded-lg bg-blue-600 my-2 flex items-center">
-            <Text className="text-white text-lg">Save</Text>
+            <Text className="text-white text-lg">Change</Text>
           </View>
         </Pressable>
       </View>
-
-      <View>
-        <Text className="text-white text-2xl font-bold">
-          Transaction history
-        </Text>
-        <View className="flex border-t mt-2 border-white/20 ">
-          {tableData.map((row, index) => (
-            <View key={index} className="flex-row w-full justify-between">
-              {row.map((cell, cellIndex) => (
-                <View
-                  key={cellIndex}
-                  className="px-3 py-3 border-b w-1/4 border-white/20 "
-                >
-                  <Text className="text-white">{cell}</Text>
-                </View>
-              ))}
-            </View>
-          ))}
-        </View>
-      </View>
-    </ScrollView>
+    </View>
   );
 };
 

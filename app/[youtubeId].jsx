@@ -1,10 +1,12 @@
 import { View, Dimensions, Pressable } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { WebView } from "react-native-webview";
 import * as ScreenOrientation from "expo-screen-orientation";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import { useRoute } from "@react-navigation/native";
+import { PREACHER } from "./utils/constants";
+import axios from "axios";
 
 const width = Dimensions.get("window");
 const height = (width.width * 9) / 16;
@@ -12,7 +14,19 @@ const height = (width.width * 9) / 16;
 const Player = () => {
   const { params } = useRoute();
 
-  const videoId = "TjuYjUrr-ug?si=RoUIMqHf6nrlaLBD";
+  const [StreamData, setStreamData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get(`${PREACHER}${params.youtubeId}/`);
+      setStreamData(data);
+    };
+    if (params) {
+      fetchData();
+    }
+  }, [params]);
+
+  const videoId = StreamData?.stream_link_id;
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
   //   change screen orientation

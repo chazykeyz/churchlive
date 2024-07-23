@@ -1,29 +1,9 @@
-import { useFonts } from "expo-font";
-import { router, Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import { Pressable, Text, View } from "react-native";
+import { View, Text, Pressable } from "react-native";
+import React from "react";
+import { Stack } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import "react-native-reanimated";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
+const _layout = () => {
   return (
     <Stack
       screenOptions={{
@@ -65,10 +45,11 @@ export default function RootLayout() {
           headerStyle: { backgroundColor: "black" },
           headerTitle: "Profile",
           headerBackTitle: "Home",
-          presentation: "modal",
         }}
       />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
-}
+};
+
+export default _layout;

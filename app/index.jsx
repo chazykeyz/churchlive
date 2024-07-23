@@ -1,28 +1,46 @@
-import { View, Text, ScrollView, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Pressable,
+  RefreshControl,
+  Dimensions,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import axios from "axios";
 import { PREACHER } from "./utils/constants";
 
 const Home = () => {
   const [StreamData, setStreamData] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const fetchData = async () => {
+    const { data } = await axios.get(PREACHER);
+    setStreamData(data);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios.get(PREACHER);
-      setStreamData(data);
-    };
-
     fetchData();
+  }, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+    setRefreshing(false);
   }, []);
 
   return (
     <View className="bg-black flex-1 ">
-      <ScrollView>
-        {/* <Link href="login">
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Link href="login">
           <Text className="">Login</Text>
-        </Link> */}
+        </Link>
         <View className="mx-3 ">
           <Text className="text-3xl font-bold text-white mt-4 mb-2">
             Recent lives
@@ -47,6 +65,8 @@ const Home = () => {
 export default Home;
 
 const PreacherCard = ({ image, title, name, churchName }) => {
+  const { width } = Dimensions.get("window");
+  const height = (width * 9) / 16;
   return (
     <Pressable
       onPress={() => {
@@ -55,7 +75,11 @@ const PreacherCard = ({ image, title, name, churchName }) => {
     >
       <View className=" my-1 overflow-hidden w-full rounded-xl border border-white/40">
         <Image
-          className="w-full h-[220px] bg-white/10"
+          className=" bg-white/10"
+          style={{
+            height: height,
+            width: width,
+          }}
           alt="preacher_image"
           source={{
             uri: image,
