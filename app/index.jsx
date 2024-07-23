@@ -1,35 +1,21 @@
 import { View, Text, ScrollView, Image, Pressable } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { router } from "expo-router";
+import axios from "axios";
+import { PREACHER } from "./utils/constants";
 
 const Home = () => {
-  const StreamData = [
-    {
-      image:
-        "https://www.mwananchi.co.tz/resource/image/3004628/landscape_ratio16x9/1600/900/4ef50da59fcfb10451ce9fdd774e08a/Mi/mwamposaa1-pic.jpg",
-      title:
-        "  Ibada ya jumapili kutoka madhabahu ya moto kuvuka eneo lake lote kwa wale",
-      name: "Apostel Mwamposa",
-      churchName: "Rise and shine",
-    },
-    {
-      image:
-        "https://www.thecitizen.co.tz/resource/image/3490756/landscape_ratio3x2/1620/1080/c17b0603ccd7cddc7e244ef0e08563c/TT/gwajima-pic.jpg",
-      title:
-        "  Ibada ya jumapili kutoka madhabahu ya moto kuvuka eneo lake lote kwa wale",
-      name: "Gwagima ",
-      churchName: "Ufufuo na uzima",
-    },
-    {
-      image:
-        "https://i.ytimg.com/vi/gIbEKAwE5YU/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGHIgWygvMA8=&rs=AOn4CLBLjOgqtdxgdascRJNk6b5DMCPmwQ",
-      title:
-        "  Ibada ya jumapili kutoka madhabahu ya moto kuvuka eneo lake lote kwa wale",
-      name: "Mzee wa upako ",
-      churchName: "Ufufuo na uzima",
-    },
-  ];
+  const [StreamData, setStreamData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get(PREACHER);
+      setStreamData(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <View className="bg-black flex-1 ">
@@ -45,9 +31,9 @@ const Home = () => {
             {StreamData.map((item, index) => (
               <PreacherCard
                 key={index}
-                image={item.image}
-                name={item.name}
-                churchName={item.churchName}
+                image={item.thumbnail}
+                name={item.preacher_name}
+                churchName={item.church_name}
                 title={item.title}
               />
             ))}
@@ -81,7 +67,7 @@ const PreacherCard = ({ image, title, name, churchName }) => {
             {/* <Ionicons name="radio-sharp" size={24} color="red" /> */}
             <Text className=" text-red-600 font-bold">LIVE</Text>
             <Text
-              className="mr-12 text-white uppercase"
+              className="mr-12 text-white uppercase ml-1"
               numberOfLines={1}
               ellipsizeMode="tail"
             >
