@@ -7,7 +7,7 @@ const _layout = () => {
     <Stack>
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="register" options={{ headerShown: false }} />
-      <Stack.Screen name="otp" options={{ headerShown: false }} />
+      <Stack.Screen name="payment" options={{ headerShown: false }} />
     </Stack>
   );
 };

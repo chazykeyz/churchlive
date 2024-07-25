@@ -38,7 +38,7 @@ const Home = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Link href="login">
+        <Link href="register">
           <Text className="">Login</Text>
         </Link>
         <View className="mx-3 ">
