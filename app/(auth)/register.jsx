@@ -3,8 +3,13 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import logo from "@/assets/images/logo.png";
+import * as Securestore from "expo-secure-store";
+import { useDispatch } from "react-redux";
+import { Registration } from "../redux/auth/action";
 
 const Register = () => {
+  const dispatch = useDispatch();
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [validation, setValidation] = useState({
@@ -12,7 +17,11 @@ const Register = () => {
     password: "",
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const payload = {
+      phone_number: phoneNumber,
+      password,
+    };
     if (phoneNumber.length === 0) {
       setValidation((prev) => ({
         ...prev,
@@ -44,7 +53,15 @@ const Register = () => {
         ["password"]: "Password should contain atleast four characters!",
       }));
     } else {
-      router.push("payment");
+      dispatch(Registration(payload)).then(async (res) => {
+        console.log(res);
+        await Securestore.setItemAsync(
+          "authDetail",
+          JSON.stringify(payload)
+        ).then(() => {
+          router.push("payment");
+        });
+      });
     }
   };
   return (
@@ -52,10 +69,8 @@ const Register = () => {
       <View className="bg-black flex items-center">
         <Image source={logo} className="w-[100px] object-cover h-[100px]" />
         <View className="h-2" />
-        <Text className="text-3xl font-bold text-white">Register</Text>
-        <View className=" w-screen  p-4">
-          <View className="h-[1px] bg-white/20 w-full " />
-        </View>
+        <Text className="text-3xl font-bold text-white py-3">Register</Text>
+
         <View className="w-screen px-4">
           <Text className="text-white/60 pb-1 text-lg">Phone number</Text>
           {validation.phoneNumber && (
@@ -95,7 +110,7 @@ const Register = () => {
             }}
           />
           <Pressable onPress={handleSubmit}>
-            <View className="w-full p-3 rounded-lg bg-red-700 my-2 flex items-center">
+            <View className="w-full p-3 rounded-lg bg-red-800 my-2 flex items-center">
               <Text className="text-white text-lg">register</Text>
             </View>
           </Pressable>

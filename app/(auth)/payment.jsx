@@ -6,10 +6,11 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import logo from "@/assets/images/logo.png";
+import * as Securestore from "expo-secure-store";
 
 const Payment = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -29,6 +30,18 @@ const Payment = () => {
       router.replace("/");
     }
   };
+
+  useEffect(() => {
+    const authDetail = async () => {
+      return await Securestore.getItemAsync("authDetail");
+    };
+    if (authDetail) {
+      authDetail().then((item) => {
+        const parseData = JSON.parse(item);
+        setPhoneNumber(parseData.phone_number);
+      });
+    }
+  }, []);
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-black">
       <ScrollView>
@@ -48,6 +61,7 @@ const Payment = () => {
               inputMode="numeric"
               placeholder="Payment numbers"
               maxLength={10}
+              value={phoneNumber}
               onChangeText={(value) => {
                 setValidation("");
                 setPhoneNumber(value);
